@@ -1,6 +1,6 @@
 import React from "react";
 
-function TaskInfoDisplay() {
+function TaskDashboard() {
   return (
     <div className="flex flex-row gap-16">
       <div className=" border border-black bg-white rounded-lg shadow-md p-4 w-64">
@@ -31,4 +31,4 @@ function TaskInfoDisplay() {
   );
 }
 
-export default TaskInfoDisplay;
+export default TaskDashboard;

@@ -1,5 +1,5 @@
 import TaskCreateForm from "@/modules/TaskCreateForm/TaskCreateForm";
-import TaskInfoDisplay from "@/modules/TaskInfoDisplay/TaskInfoDisplay";
+import TaskDashboard from "@/modules/TaskDashboard/TaskDashboard";
 import TaskList from "@/modules/TaskList/TaskList";
 import Head from "next/head";
 import "tailwindcss/tailwind.css";
@@ -16,7 +16,7 @@ export default function Home() {
             Task Management App
           </h1>
         </div>
-        <TaskInfoDisplay />
+        <TaskDashboard />
         <TaskCreateForm />
         <TaskList />
       </main>

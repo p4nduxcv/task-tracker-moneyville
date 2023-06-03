@@ -10,12 +10,26 @@ function TaskCreateForm() {
     timeRequired: "",
   };
 
+  const submitFormData = async () => {
+    if (!values) {
+      return;
+    }
+    const response = await fetch("api/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    if (!response.ok) {
+      return;
+    }
+  };
+
   const { handleSubmit, values, handleBlur, handleChange, errors, touched } =
     useFormik({
       initialValues: formInitialValues,
-      onSubmit: () => {
-        console.log("hit", values);
-      },
+      onSubmit: submitFormData,
       validationSchema: formValidationSchema,
     });
 
