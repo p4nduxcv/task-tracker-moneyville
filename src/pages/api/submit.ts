@@ -1,6 +1,6 @@
 import { writeFileSync } from "fs";
 
-export default async function submit(req, res) {
+export default async function submit(req: any, res: any) {
   if (req.method !== "POST") {
     return res.status(405);
   }
