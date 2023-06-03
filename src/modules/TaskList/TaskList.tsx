@@ -1,17 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Task } from "./type/ITaskList";
+import { ITaskList } from "../../common/types/ITaskList";
 
 function TaskList() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    fetch(`/api/damage`).then((res) =>
-      res.json().then((data) => setTasks(data.data))
-    );
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/task`);
+        const data = await response.json();
+        setTasks(data.data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
   }, []);
 
-  const getTableRow = (item: Task) => {
+  const setTableRow = (item: ITaskList) => {
     const {
       id,
       data: { taskTitle, timeRequired },
@@ -47,7 +54,7 @@ function TaskList() {
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {tasks.map((item, index) => getTableRow(item))}
+                {tasks.map((item) => setTableRow(item))}
               </tbody>
             </table>
           </div>
