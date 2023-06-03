@@ -1,28 +1,46 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 
 function TaskList() {
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    fetch(`/api/damage`).then((res) =>
+      res.json().then((data) => setTasks(data.data))
+    );
+  }, []);
   return (
     <>
-      <div className="grid grid-cols-3">
-        <div className="border border-gray-300">
-          <h3 className="font-bold p-4">Column 1</h3>
-          <p className="border-t border-b border-gray-300 p-4">Data 1</p>
-          <p className="border-b border-gray-300 p-4">Data 2</p>
-          <p className="border-b border-gray-300 p-4">Data 3</p>
+      <section className="container mx-auto">
+        <div className="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
+          <div className="w-full overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 border-b border-gray-600">
+                  <th className="px-4 py-3">Task Title</th>
+                  <th className="px-4 py-3">Time Required (in Hrs)</th>
+                  <th className="px-4 py-3">Action</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                <tr className="text-gray-700">
+                  <td className="px-4 py-3 border">
+                    <div className="flex items-center text-md">
+                      <p>Task-1</p>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 border text-md">21</td>
+                  <td className="px-4 py-3 border text-md">
+                    <a href="" className="text-red-500 underline">
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className="border border-gray-300">
-          <h3 className="font-bold p-4">Column 2</h3>
-          <p className="border-t border-b border-gray-300 p-4">Data 4</p>
-          <p className="border-b border-gray-300 p-4">Data 5</p>
-          <p className="border-b border-gray-300 p-4">Data 6</p>
-        </div>
-        <div className="border border-gray-300">
-          <h3 className="font-bold p-4">Column 3</h3>
-          <p className="border-t border-b border-gray-300 p-4">Data 7</p>
-          <p className="border-b border-gray-300 p-4">Data 8</p>
-          <p className="border-b border-gray-300 p-4">Data 9</p>
-        </div>
-      </div>
+      </section>
     </>
   );
 }

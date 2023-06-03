@@ -3,6 +3,7 @@ import React, { use } from "react";
 import { useFormik } from "formik";
 import { IFormValues } from "./type/ITaskCreate";
 import { formValidationSchema } from "@/schemas";
+import Swal from "sweetalert2";
 
 function TaskCreateForm() {
   const formInitialValues: IFormValues = {
@@ -22,8 +23,18 @@ function TaskCreateForm() {
       body: JSON.stringify(values),
     });
     if (!response.ok) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong",
+      });
       return;
     }
+    Swal.fire({
+      icon: "success",
+      title: "Done!",
+      text: "Task has been submitted",
+    });
   };
 
   const { handleSubmit, values, handleBlur, handleChange, errors, touched } =
@@ -82,6 +93,7 @@ function TaskCreateForm() {
 
         <div className="w-full max-w-xs self-end">
           <button
+            type="submit"
             disabled={errors.timeRequired || errors.taskTitle ? true : false}
             className="btn btn-primary w-full max-w-xs"
           >
