@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { Task } from "./type/ITaskList";
 
 function TaskList() {
   const [tasks, setTasks] = useState([]);
@@ -9,6 +10,29 @@ function TaskList() {
       res.json().then((data) => setTasks(data.data))
     );
   }, []);
+
+  const getTableRow = (item: Task) => {
+    const {
+      id,
+      data: { taskTitle, timeRequired },
+    } = item;
+    return (
+      <tr key={id} className="text-gray-700">
+        <td className="px-4 py-3 border">
+          <div className="flex items-center text-md">
+            <p>{taskTitle}</p>
+          </div>
+        </td>
+        <td className="px-4 py-3 border text-md">{timeRequired}</td>
+        <td className="px-4 py-3 border text-md">
+          <a href="" className="text-red-500 underline">
+            Delete
+          </a>
+        </td>
+      </tr>
+    );
+  };
+
   return (
     <>
       <section className="container mx-auto">
@@ -23,19 +47,7 @@ function TaskList() {
                 </tr>
               </thead>
               <tbody className="bg-white">
-                <tr className="text-gray-700">
-                  <td className="px-4 py-3 border">
-                    <div className="flex items-center text-md">
-                      <p>Task-1</p>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 border text-md">21</td>
-                  <td className="px-4 py-3 border text-md">
-                    <a href="" className="text-red-500 underline">
-                      Delete
-                    </a>
-                  </td>
-                </tr>
+                {tasks.map((item, index) => getTableRow(item))}
               </tbody>
             </table>
           </div>
