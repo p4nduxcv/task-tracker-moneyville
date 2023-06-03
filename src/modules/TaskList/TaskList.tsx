@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ITaskList } from "../../common/types/ITaskList";
+import Swal from "sweetalert2";
 
 function TaskList() {
   const [tasks, setTasks] = useState([]);
@@ -32,12 +33,31 @@ function TaskList() {
         </td>
         <td className="px-4 py-3 border text-md">{timeRequired}</td>
         <td className="px-4 py-3 border text-md">
-          <a href="" className="text-red-500 underline">
+          <p
+            onClick={deleteTableRow}
+            className="text-red-500 underline cursor-pointer"
+          >
             Delete
-          </a>
+          </p>
         </td>
       </tr>
     );
+  };
+
+  const deleteTableRow = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
   };
 
   return (
