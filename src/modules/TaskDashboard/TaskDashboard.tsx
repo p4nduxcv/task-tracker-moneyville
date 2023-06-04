@@ -1,25 +1,13 @@
 "use client";
 import { ITaskList } from "@/common/types/ITaskList";
 import React, { useEffect, useState } from "react";
+interface Props {
+  tasks: ITaskList[];
+}
 
-function TaskDashboard() {
-  const [allTasks, setAllTasks] = useState<ITaskList[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/task`);
-        const data = await response.json();
-        setAllTasks(data.data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const totalTask = allTasks.length;
-  const totalTimeRequired = allTasks.reduce(
+function TaskDashboard({ tasks }: Props) {
+  const totalTask = tasks.length;
+  const totalTimeRequired = tasks.reduce(
     (total, item) => total + item.data.timeRequired,
     0
   );

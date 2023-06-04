@@ -2,25 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { ITaskList } from "../../common/types/ITaskList";
 import Swal from "sweetalert2";
-import { useRouter } from "next/router";
+interface Props {
+  tasks: ITaskList[];
+  handleDelete: Function;
+}
 
-function TaskList() {
-  const [tasks, setTasks] = useState([]);
-  // const router = useRouter();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/task`);
-        const data = await response.json();
-        setTasks(data.data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchData();
-  }, []);
-
+function TaskList({ tasks, handleDelete }: Props) {
   const setTableRow = (item: ITaskList) => {
     const {
       id,
@@ -47,22 +34,27 @@ function TaskList() {
   };
 
   const handleDeleteFile = async (id: number) => {
+    if (!id) {
+      return;
+    }
     try {
       const response = await fetch(`/api/task/delete?fileName=${id}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        console.log("File deleted successfully");
-        // Perform any additional actions or update the UI as needed
+        handleDelete(id);
+        Swal.fire("Deleted!", "Task has been deleted.", "success");
       } else {
         const errorData = await response.json();
-        console.log("Error deleting file:", errorData.error);
-        // Handle the error or show an error message to the user
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Delete request is failed",
+        });
       }
     } catch (error) {
       console.log("An error occurred while deleting the file:", error);
-      // Handle the error or show an error message to the user
     }
   };
 
@@ -77,9 +69,7 @@ function TaskList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(id);
         handleDeleteFile(id);
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
     });
   };

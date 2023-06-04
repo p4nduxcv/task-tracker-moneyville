@@ -4,8 +4,11 @@ import { useFormik } from "formik";
 import { IFormValues } from "./type/ITaskCreate";
 import { formValidationSchema } from "@/schemas";
 import Swal from "sweetalert2";
+interface Props {
+  handleAdd: Function;
+}
 
-function TaskCreateForm() {
+function TaskCreateForm({ handleAdd }: Props) {
   const formInitialValues: IFormValues = {
     taskTitle: "",
     timeRequired: "",
@@ -30,11 +33,15 @@ function TaskCreateForm() {
       });
       return;
     }
+
     Swal.fire({
       icon: "success",
       title: "Done!",
       text: "Task has been submitted",
     });
+    const data = await response.json();
+
+    handleAdd({ id: data.uuid, data: values });
   };
 
   const { handleSubmit, values, handleBlur, handleChange, errors, touched } =
