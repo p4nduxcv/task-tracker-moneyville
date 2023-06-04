@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { ITaskList } from "../../common/types/ITaskList";
 import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 function TaskList() {
   const [tasks, setTasks] = useState([]);
+  // const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +36,7 @@ function TaskList() {
         <td className="px-4 py-3 border text-md">{timeRequired}</td>
         <td className="px-4 py-3 border text-md">
           <p
-            onClick={deleteTableRow}
+            onClick={() => deleteTableRow(id)}
             className="text-red-500 underline cursor-pointer"
           >
             Delete
@@ -44,7 +46,27 @@ function TaskList() {
     );
   };
 
-  const deleteTableRow = () => {
+  const handleDeleteFile = async (id: number) => {
+    try {
+      const response = await fetch(`/api/task/delete?fileName=${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        console.log("File deleted successfully");
+        // Perform any additional actions or update the UI as needed
+      } else {
+        const errorData = await response.json();
+        console.log("Error deleting file:", errorData.error);
+        // Handle the error or show an error message to the user
+      }
+    } catch (error) {
+      console.log("An error occurred while deleting the file:", error);
+      // Handle the error or show an error message to the user
+    }
+  };
+
+  const deleteTableRow = (id: number) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -55,6 +77,8 @@ function TaskList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+        console.log(id);
+        handleDeleteFile(id);
         Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
     });
